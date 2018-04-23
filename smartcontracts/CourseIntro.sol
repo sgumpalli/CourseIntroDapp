@@ -4,18 +4,22 @@ contract CourseIntro {
     
     string public fName;
     string constant type1 ="study";
+    address owner;
     
     uint public age;
     
-    // function CourseIntro() public{
-    //     fName = "Gumpa";
-    //     age = 26;
-    // }
-    
+    function CourseIntro() public{
+        owner = msg.sender;
+    }
     
     event Instructor(string fName, uint age);
     
-    function setInstructor(string _name, uint _age) public {
+    modifier ownerOnly(uint _age){
+        require(msg.sender == owner && _age>=25);
+        _;
+    }
+    
+    function setInstructor(string _name, uint _age) ownerOnly(_age) public {
         fName = _name;
         age = _age;
         emit Instructor(_name, _age);
